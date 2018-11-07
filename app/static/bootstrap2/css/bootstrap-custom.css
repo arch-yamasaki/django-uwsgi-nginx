@@ -1,0 +1,44 @@
+.navbar{border-bottom:1px #aaa;box-shadow:0 1px 3px #aaa;}
+
+.text-wh{color:#ffffff;}
+.text-gry{color:#777;}
+.text-au{color:#82af00;}
+.text-yl{color:#bb0;}
+.text-primary{color:#00c;}
+.text-success{color:#070;}
+.text-warning{color:#6e4a20;}
+.text-danger{color: #f00;}
+.text-pp{color: #7a6882;}
+
+.fs-xs{font-size:11px;}
+.fs-sm{font-size:12px;}
+.fs-lg{font-size:16px;}
+.fs-xl{font-size:18px;}
+
+.bg-bk{background-color:#333;color:#fff;padding:10px;}
+.bg-gl{background-color:#777;color:#fff;padding:10px;}
+.bg-wh{background-color:#eee;padding:10px;}
+.bg-rd{background-color:#fee;padding:10px;}
+.bg-pp{background-color:#ede;padding:10px;}
+.bg-gr{background-color:#cfc;padding:10px;}
+.bg-yl{background-color:#f5f6cd;padding:10px;}
+.bg-primary,.bg-success,.bg-info,.bg-warning,.bg-danger{padding:10px;}
+
+
+.ts-lg{text-shadow:3px 3px 5px #888;}
+.ts-md{text-shadow:2px 2px 3px #888;}
+.ts-smw{text-shadow:2px 2px 1px #888;}
+.ts-smb{text-shadow:2px 2px 3px #333;}
+.ts-xs{text-shadow:1px 1px 1px #333;}
+
+.btn{border-radius:10px;}
+.btn-zero{background:#b7ff00;color: #000;}
+
+.btn-sdlg{box-shadow:5px 5px 8px #999;}
+.btn-sdmd{box-shadow:3px 3px 5px #999;}
+.btn-sdsm{box-shadow:2px 2px 3px #999;}
+.btn-glyphicon { padding:8px; background:#ffffff; margin-right:4px; }
+.icon-btn { padding: 1px 15px 3px 2px; border-radius:50px;}
+
+textarea{margin-bottom:15px;}
+.copyright{font-size:12px;color:#777;text-align:center;padding-top: 30px;}

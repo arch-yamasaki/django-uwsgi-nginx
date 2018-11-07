@@ -3,9 +3,17 @@ from django.http import HttpResponse
 
 from .models import Test
 
-
-def index(request):
-    ans = "Nephrosis 7! : "
+def testview(request):
+    ans = "Nephrosis test! : "
     t = Test.objects.get(pk=2)
     ans += t.test_text
-    return HttpResponse(ans)
+    block_body = "block"
+    end_body = "end"
+    context = {}
+    return render(request, "nephrosis/sample.html", context)
+    # return HttpResponse(ans)
+
+def index(request):
+    test_list = Test.objects.all()
+    context = {"test_list": test_list}
+    return render(request, "nephrosis/index.html", context)
