@@ -5,7 +5,7 @@ from .models import Test
 
 
 def index(request):
-    ans = ""
-    # t = Test.objects.get(pk=0)
-    # ans += t.test_text
-    return HttpResponse("Nephrosis 4")
+    ans = "Nephrosis 7! : "
+    t = Test.objects.get(pk=2)
+    ans += t.test_text
+    return HttpResponse(ans)
