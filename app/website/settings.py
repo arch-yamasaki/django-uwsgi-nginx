@@ -25,7 +25,7 @@ SECRET_KEY = '!@pm-wk*ry4*!=9*0frqbypu7@0c4u^%#*dsx0bz$$#6dr)1v_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["35.221.104.247"]
+ALLOWED_HOSTS = ["35.221.104.247", "127.0.0.1"]
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # for nephrosis app
+    'nephrosis.apps.NephrosisConfig',
 ]
 
 MIDDLEWARE = [
