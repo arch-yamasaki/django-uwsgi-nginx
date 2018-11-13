@@ -1,9 +1,16 @@
-{% if test_list %}
-    <ul>
-    {% for test in test_list %}
-        <li><a href="/polls/{{ question.id }}/">{{ test.test_text }}</a></li>
+{% extends "nephrosis/base.html" %}
+
+{% block body %}
+
+<h3> 患者一覧 </h3>
+<br>
+{% if patient_list %}
+    <div class="list-group">
+    {% for patient in patient_list %}
+        <a href="/nephrosis/{{ patient.id }}" class="list-group-item">{{ patient.patient_text }}</a>
     {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>No nephrosis are available.</p>
-{% endif %}
+{% endif %} 
+{% endblock  %}

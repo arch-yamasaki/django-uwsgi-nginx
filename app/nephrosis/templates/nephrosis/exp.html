@@ -1,0 +1,30 @@
+{% extends "nephrosis/base.html" %}
+{% load static %} {# staticファイルを使うときは load staticを追加する #}
+
+{% block body %}
+
+nephrosis {{patient_id}}
+<br>
+
+<script type="text/javascript" charset="utf-8">
+    var limePlot1 = []
+    {% for exp in exp_list %}
+        limePlot1.push({
+            indexLabel: "{{exp.cond_exp|safe}}",
+            y: {{exp.contribution}},
+            x: {{forloop.counter}},
+        })
+    {% endfor %}
+</script>
+
+<!-- write canvas.js script -->
+<div id="chartContainer" style="height: 350px; width: 30%;"></div>
+
+<!-- load canvas.js -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
+
+<script type="text/javascript" src="{% static 'canvas/js/exp.js' %}" charset="utf-8"></script>
+
+
+{% endblock %}

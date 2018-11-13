@@ -47,12 +47,11 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 COPY requirements.txt /home/docker/code/
 RUN pip3 install -r /home/docker/code/requirements.txt
 
+# RUN apt-get update && apt-get install wget
+
 # add (the rest of) our code
 # COPY . /home/docker/code/docker build -t django_nginx:0.0.4 .
 
-# install django, normally you would remove this step because your project would already
-# be installed in the code/app/ directory
-# RUN django-admin.py startproject website /home/docker/code/app/
 
 EXPOSE 80
 CMD ["supervisord", "-n"]
