@@ -24,7 +24,23 @@ nephrosis {{patient_id}}
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
 
-<script type="text/javascript" src="{% static 'canvas/js/exp.js' %}" charset="utf-8"></script>
+<script type="text/javascript" src="{% static 'myjs/exp.js' %}" charset="utf-8"></script>
 
+<br>
+<form name="is_nephs" action="/nephrosis/{{patient_id}}" method="POST">
+    {% csrf_token %}
+    <!-- !! 一旦userをosamuに固定 -->
+    <input type="hidden" name="user" value="osamu">
+    <input type="radio" id="id_nephs" name="is_nephs" value="nephs">
+    <label for="id_nephs"> Nephrosis </label>
+    <input type="radio" id="id_non_nephs" name="is_nephs" value="non_nephs">
+    <label for="id_non_nephs"> Non-Nephrosis </label>
+    <input type="submit" value="決定">
+</form>
+<script type="text/javascript" src="{% static 'myjs/ajaxform.js' %}" charset="utf-8"></script>
+
+<span id="id_div_ajax_response">
+    AJAX RESPONSE
+</span>
 
 {% endblock %}

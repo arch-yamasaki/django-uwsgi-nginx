@@ -1,12 +1,11 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
 
-from .models import Patient, Exp
+from .models import Patient, Exp, Result, User
 
 def testview(request):
-    context = {}
-    return render(request, "nephrosis/sample.html", context)
-    # return HttpResponse(ans)[]
+    context = {"is_ajax":request.is_ajax()}
+    return render(request, "nephrosis/test.html", context)
 
 
 def index(request):
@@ -16,12 +15,24 @@ def index(request):
     return render(request, "nephrosis/index.html", context)
 
 def detail(request, patient_id):
-    # exp_list = get_object_or_404(Exp, pk=patient_id)
-    exp_list = get_list_or_404(Exp, patient=patient_id)
-    context = {
-        "exp_list": exp_list,
-        "patient_id": patient_id
-        }
-    return render(request, "nephrosis/exp.html", context)
-
+    if request.is_ajax():
+        user_is_nephs = request.POST["is_nephs"] == "nephs"
+        patient_obj = get_object_or_404(Patient, pk=patient_id)
+        user_id = 1
+        user_obj = get_object_or_404(User, pk=user_id)
+        is_correct = patient_obj.is_nephrosis == user_is_nephs
+        defaults = {"user_prediction": user_is_nephs, "is_correct": is_correct}
+        result, created = Result.objects.update_or_create(
+            patient=patient_obj,
+            user=user_obj,
+            defaults=defaults,
+        )
+        return HttpResponse(request.POST["is_nephs"])
+    else:
+        exp_list = get_list_or_404(Exp, patient=patient_id)
+        context = {
+            "exp_list": exp_list,
+            "patient_id": patient_id
+            }
+        return render(request, "nephrosis/exp.html", context)
 

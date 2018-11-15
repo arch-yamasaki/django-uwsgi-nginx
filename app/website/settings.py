@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["35.190.235.117", "127.0.0.1"]
 
+# for debug tools
+INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # for nephrosis app
     'nephrosis.apps.NephrosisConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -128,3 +132,5 @@ STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static"),
     ]
 )
+
+APPEND_SLASH = False
