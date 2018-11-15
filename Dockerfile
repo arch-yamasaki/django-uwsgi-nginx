@@ -29,6 +29,7 @@ RUN apt-get update && \
 	nginx \
 	supervisor \
 	vim \
+	memcached \
 	sqlite3 && \
 	pip3 install -U pip setuptools && \
    rm -rf /var/lib/apt/lists/*

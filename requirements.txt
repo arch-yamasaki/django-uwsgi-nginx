@@ -1,1 +1,4 @@
 django
+python-memcached
+django-debug-toolbar
+django-extensions 

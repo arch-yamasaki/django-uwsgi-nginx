@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # for nephrosis app
     'nephrosis.apps.NephrosisConfig',
     'debug_toolbar',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -132,5 +136,8 @@ STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static"),
     ]
 )
+
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+
 
 APPEND_SLASH = False

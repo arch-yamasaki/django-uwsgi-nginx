@@ -1,3 +1,10 @@
+# TODO:
+# - [x]test task 1
+# - test task 2
+
+# FIXME:
+# - test fixme 
+
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
 
@@ -32,7 +39,9 @@ def detail(request, patient_id):
         exp_list = get_list_or_404(Exp, patient=patient_id)
         context = {
             "exp_list": exp_list,
-            "patient_id": patient_id
+            "patient_id": patient_id,
+            "list_15" : range(15),
+            "list_12" : range(12),
             }
         return render(request, "nephrosis/exp.html", context)
 

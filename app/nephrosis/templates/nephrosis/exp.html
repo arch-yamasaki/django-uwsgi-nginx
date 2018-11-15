@@ -2,45 +2,103 @@
 {% load static %} {# staticファイルを使うときは load staticを追加する #}
 
 {% block body %}
+<div class="container">
+    <div class="row">
+        nephrosis {{patient_id}}
+    </div>
+    <div class="row">
+        {% comment %} カラム用 {% endcomment %}
+        <div class="col-md-1">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="table-success">
+                        <tr>
+                            <th> ITEMS </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in list_12 %}
+                        <tr>
+                            <th class="table-info"> ITEMS{{i}}</th>
+                        </tr>
+                    {% endfor %}
 
-nephrosis {{patient_id}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% comment %} 左半分 {% endcomment %}
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            {% for i in list_15 %}
+                                <th> th{{i}} </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in list_12 %}
+                        <tr>
+                            {% for i in list_15 %}
+                            <td> {{i}} </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        {% comment %} 右半分 {% endcomment %}
+        <div class="col-md-5">
+
+            <script type="text/javascript" charset="utf-8">
+                var limePlot1 = []
+                {% for exp in exp_list %}
+                    limePlot1.push({
+                        indexLabel: "{{exp.cond_exp|safe}}",
+                        y: {{exp.contribution}},
+                        x: {{forloop.counter}},
+                    })
+                {% endfor %}
+            </script>
+
+            <!-- write canvas.js script -->
+            {% comment %} <div id="chartContainer" style="height: 350px; width: 30%;"></div> {% endcomment %}
+            <div id="chartContainer"></div>
+
+            <!-- load canvas.js -->
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            <!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
+
+            <script type="text/javascript" src="{% static 'myjs/exp.js' %}" charset="utf-8"></script>
+        </div>
+    </div>
+    <div class="row">
+        <form name="is_nephs" action="/nephrosis/{{patient_id}}" method="POST">
+            {% csrf_token %}
+            <!-- !! 一旦userをosamuに固定 -->
+            <input type="hidden" name="user" value="osamu">
+            <input type="radio" id="id_nephs" name="is_nephs" value="nephs" checked>
+            <label for="id_nephs"> Nephrosis </label>
+            <input type="radio" id="id_non_nephs" name="is_nephs" value="non_nephs">
+            <label for="id_non_nephs"> Non-Nephrosis </label>
+            <input type="submit" value="決定">
+        </form>
+        <script type="text/javascript" src="{% static 'myjs/ajaxform.js' %}" charset="utf-8"></script>
+        <br>
+    </div>
+    <div class="row">
+        <span id="id_div_ajax_response">
+            AJAX RESPONSE
+        </span>
+    </div>
+</div>
+
 <br>
-
-<script type="text/javascript" charset="utf-8">
-    var limePlot1 = []
-    {% for exp in exp_list %}
-        limePlot1.push({
-            indexLabel: "{{exp.cond_exp|safe}}",
-            y: {{exp.contribution}},
-            x: {{forloop.counter}},
-        })
-    {% endfor %}
-</script>
-
-<!-- write canvas.js script -->
-<div id="chartContainer" style="height: 350px; width: 30%;"></div>
-
-<!-- load canvas.js -->
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
-
-<script type="text/javascript" src="{% static 'myjs/exp.js' %}" charset="utf-8"></script>
-
 <br>
-<form name="is_nephs" action="/nephrosis/{{patient_id}}" method="POST">
-    {% csrf_token %}
-    <!-- !! 一旦userをosamuに固定 -->
-    <input type="hidden" name="user" value="osamu">
-    <input type="radio" id="id_nephs" name="is_nephs" value="nephs">
-    <label for="id_nephs"> Nephrosis </label>
-    <input type="radio" id="id_non_nephs" name="is_nephs" value="non_nephs">
-    <label for="id_non_nephs"> Non-Nephrosis </label>
-    <input type="submit" value="決定">
-</form>
-<script type="text/javascript" src="{% static 'myjs/ajaxform.js' %}" charset="utf-8"></script>
-
-<span id="id_div_ajax_response">
-    AJAX RESPONSE
-</span>
-
 {% endblock %}
