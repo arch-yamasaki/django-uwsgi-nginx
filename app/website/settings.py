@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'nephrosis.apps.NephrosisConfig',
     'debug_toolbar',
     'django_extensions',
+    # for Accounts
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +66,7 @@ ROOT_URLCONF = 'website.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,7 +130,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATICFILES_DIRS = (
@@ -139,5 +140,6 @@ STATICFILES_DIRS = (
 
 CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
+APPEND_SLASH = True
 
-APPEND_SLASH = False
+LOGIN_REDIRECT_URL = '/'

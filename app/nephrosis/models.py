@@ -46,11 +46,11 @@ class Result(models.Model):
 
 class Inspection(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    inspection_time = models.DateField()
+    inspection_date = models.DateField()
     inspection_item = models.CharField(max_length=10)
-    inspecgtion_value = models.FloatField()
+    inspection_value = models.FloatField(null=True, blank=True)
     
     def __str__(self):
-        return "name:{} | time:{} | item:{}".format(
-        self.patient, str(self.inspection_time), self.inspection_item
+        return "name:{} | date:{} | item:{}".format(
+        self.patient, str(self.inspection_date), self.inspection_item
         )

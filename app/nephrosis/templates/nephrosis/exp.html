@@ -2,14 +2,21 @@
 {% load static %} {# staticファイルを使うときは load staticを追加する #}
 
 {% block body %}
+<style type="text/css">
+    .row-eq-height {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>
+
 <div class="container">
     <div class="row">
         nephrosis {{patient_id}}
     </div>
-    <div class="row">
-        {% comment %} カラム用 {% endcomment %}
-        <div class="col-md-1">
-            <div class="table-responsive">
+    <div class="row m-3">
+        {% comment %} インデックス用 {% endcomment %}
+        <div class="col-md-1 h-100">
+            <div>
                 <table class="table">
                     <thead class="table-success">
                         <tr>
@@ -17,9 +24,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for i in list_12 %}
+                    {% for item in item_list %}
                         <tr>
-                            <th class="table-info"> ITEMS{{i}}</th>
+                            <th class="table-info"> {{item}} </th>
                         </tr>
                     {% endfor %}
 
@@ -28,21 +35,21 @@
             </div>
         </div>
         {% comment %} 左半分 {% endcomment %}
-        <div class="col-md-6">
+        <div class="col-md-6 h-100">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="table-success">
                         <tr>
-                            {% for i in list_15 %}
-                                <th> th{{i}} </th>
+                            {% for date in date_list %}
+                                <th> {{date | date:"Y/m/d"}} </th>
                             {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
-                    {% for i in list_12 %}
+                    {% for date_inspection_values in inspection_array %}
                         <tr>
-                            {% for i in list_15 %}
-                            <td> {{i}} </td>
+                            {% for inspection_value in date_inspection_values %}
+                            <td> {{ inspection_value | floatformat:-3 |  default:"N/A" }} </td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
@@ -56,30 +63,59 @@
         {% comment %} 右半分 {% endcomment %}
         <div class="col-md-5">
 
-            <script type="text/javascript" charset="utf-8">
-                var limePlot1 = []
-                {% for exp in exp_list %}
-                    limePlot1.push({
-                        indexLabel: "{{exp.cond_exp|safe}}",
-                        y: {{exp.contribution}},
-                        x: {{forloop.counter}},
-                    })
-                {% endfor %}
-            </script>
+            {% comment %} write predcition.js script {% endcomment %}
+            <div class="row" style="height: 240px">
 
-            <!-- write canvas.js script -->
-            {% comment %} <div id="chartContainer" style="height: 350px; width: 30%;"></div> {% endcomment %}
-            <div id="chartContainer"></div>
+                <div class="col-md-12">
+                    {% comment %} generate prediction data {% endcomment %}
+                    <script type="text/javascript" charset="utf-8">
+                        var predictionPlot = [{
+                                indexLabel: "nephs_proba",
+                                y: {{patient_obj.nephs_proba}},
+                                x: 0,
+                            },{
+                                indexLabel: "nonnephs_proba",
+                                y: {{patient_obj.nonnephs_proba}},
+                                x: 1,
+                                }]
+                    </script>
+                    <div id="predictionContainer" style="height: 230px; width: 90%;"></div>
+                    {% comment %} <div id="predictionContainer" style="height: 240px width: 80%";></div> {% endcomment %}
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="row" style="height: 360px">
+                {% comment %} write canvas.js script {% endcomment %}
+                {% comment %} <div class="w-100"></div> {% endcomment %}
+                <div class="col-md-12">
+                    {% comment %} generate LIME expression data {% endcomment %}
+                    <script type="text/javascript" charset="utf-8">
+                        var limePlot1 = []
+                        {% for exp in exp_list %}
+                            limePlot1.push({
+                                indexLabel: "{{exp.cond_exp|safe}}",
+                                y: {{exp.contribution}},
+                                x: {{forloop.counter}},
+                            })
+                        {% endfor %}
+                    
+                    </script>
+                    <div id="chartContainer" style="height: 350px width: 90%"></div>
+                    {% comment %} <div id="chartContainer"  style="height: 360px width: 80%"></div> {% endcomment %}
+                </div>
+            </div>
 
             <!-- load canvas.js -->
             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
             <!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
 
+            <script type="text/javascript" src="{% static 'myjs/prediction.js' %}" charset="utf-8"></script>
             <script type="text/javascript" src="{% static 'myjs/exp.js' %}" charset="utf-8"></script>
+            
         </div>
     </div>
     <div class="row">
-        <form name="is_nephs" action="/nephrosis/{{patient_id}}" method="POST">
+        <form name="is_nephs" action="./{{patient_id}}" method="POST">
             {% csrf_token %}
             <!-- !! 一旦userをosamuに固定 -->
             <input type="hidden" name="user" value="osamu">

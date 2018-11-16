@@ -7,7 +7,7 @@
 {% if patient_list %}
     <div class="list-group">
     {% for patient in patient_list %}
-        <a href="/nephrosis/{{ patient.id }}" class="list-group-item">{{ patient.patient_text }}</a>
+        <a href="./{{ patient.id }}" class="list-group-item">{{ patient.patient_text }}</a>
     {% endfor %}
     </div>
 {% else %}
