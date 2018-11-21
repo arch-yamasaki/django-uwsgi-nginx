@@ -61,61 +61,71 @@
 
 
         {% comment %} 右半分 {% endcomment %}
-        <div class="col-md-5">
-
-            {% comment %} write predcition.js script {% endcomment %}
-            <div class="row" style="height: 240px">
-
-                <div class="col-md-12">
-                    {% comment %} generate prediction data {% endcomment %}
-                    <script type="text/javascript" charset="utf-8">
-                        var predictionPlot = [{
-                                indexLabel: "nephs_proba",
-                                y: {{patient_obj.nephs_proba}},
-                                x: 0,
-                            },{
-                                indexLabel: "nonnephs_proba",
-                                y: {{patient_obj.nonnephs_proba}},
-                                x: 1,
-                                }]
-                    </script>
-                    <div id="predictionContainer" style="height: 230px; width: 90%;"></div>
-                    {% comment %} <div id="predictionContainer" style="height: 240px width: 80%";></div> {% endcomment %}
-                </div>
+        {% if test_id == "A" %}
+            <div class="col-md-5">
             </div>
-            <div class="w-100"></div>
-            <div class="row" style="height: 360px">
-                {% comment %} write canvas.js script {% endcomment %}
-                {% comment %} <div class="w-100"></div> {% endcomment %}
-                <div class="col-md-12">
-                    {% comment %} generate LIME expression data {% endcomment %}
-                    <script type="text/javascript" charset="utf-8">
-                        var limePlot1 = []
-                        {% for exp in exp_list %}
-                            limePlot1.push({
-                                indexLabel: "{{exp.cond_exp|safe}}",
-                                y: {{exp.contribution}},
-                                x: {{forloop.counter}},
-                            })
-                        {% endfor %}
-                    
-                    </script>
-                    <div id="chartContainer" style="height: 350px width: 90%"></div>
-                    {% comment %} <div id="chartContainer"  style="height: 360px width: 80%"></div> {% endcomment %}
+        {% else %}
+
+            <div class="col-md-5">
+
+                {% comment %} write predcition.js script {% endcomment %}
+                <div class="row" style="height: 240px">
+
+                    <div class="col-md-12">
+                        <script type="text/javascript" charset="utf-8">
+                            var predictionPlot = [{
+                                    indexLabel: "nephs_proba",
+                                    y: {{patient_obj.nephs_proba}},
+                                    x: 0,
+                                },{
+                                    indexLabel: "nonnephs_proba",
+                                    y: {{patient_obj.nonnephs_proba}},
+                                    x: 1,
+                                    }]
+                        </script>
+                        <div id="predictionContainer" style="height: 230px; width: 90%;"></div>
+                        {% comment %} <div id="predictionContainer" style="height: 240px width: 80%";></div> {% endcomment %}
+                    </div>
                 </div>
+                <div class="w-100"></div>
+                
+                {% comment %} generate LIME explanation {% endcomment %}
+                {% if test_id == "C" %}
+                    <div class="row" style="height: 360px">
+                        {% comment %} write canvas.js script {% endcomment %}
+                        {% comment %} <div class="w-100"></div> {% endcomment %}
+                        <div class="col-md-12">
+                            <script type="text/javascript" charset="utf-8">
+                                var limePlot1 = []
+                                {% for exp in exp_list %}
+                                    limePlot1.push({
+                                        indexLabel: "{{exp.cond_exp|safe}}",
+                                        y: {{exp.contribution}},
+                                        x: {{forloop.counter}},
+                                    })
+                                {% endfor %}
+                            
+                            </script>
+                            <div id="chartContainer" style="height: 350px width: 90%"></div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                <!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
+                <script type="text/javascript" src="{% static 'myjs/prediction.js' %}" charset="utf-8"></script>
+                <script type="text/javascript" src="{% static 'myjs/exp.js' %}" charset="utf-8"></script>
+                
             </div>
+        {% endif %}
 
-            <!-- load canvas.js -->
-            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-            <!-- <script src="{% static 'canvasjs/canvasjs.min.js' %}"></script> -->
-
-            <script type="text/javascript" src="{% static 'myjs/prediction.js' %}" charset="utf-8"></script>
-            <script type="text/javascript" src="{% static 'myjs/exp.js' %}" charset="utf-8"></script>
-            
-        </div>
     </div>
+
+
+    {% comment %} POST入力フォーム {% endcomment %}
     <div class="row">
-        <form name="is_nephs" action="./{{patient_id}}" method="POST">
+        {% comment %} <form name="is_nephs" action="./{{patient_id}}" method="POST"> {% endcomment %}
+        <form name="is_nephs" action="{% url 'nephrosis:detail' test_id patient_id %}" method="POST">
             {% csrf_token %}
             <!-- !! 一旦userをosamuに固定 -->
             <input type="hidden" name="user" value="osamu">
@@ -130,7 +140,11 @@
     </div>
     <div class="row">
         <span id="id_div_ajax_response">
-            AJAX RESPONSE
+            {% if result_obj == None %}
+                ネフローゼの発症予測を行なってください。
+            {% else %}
+                現在の予測 : {{result_obj|yesno:"ネフローゼ, 非ネフローゼ" }}
+            {% endif %}
         </span>
     </div>
 </div>

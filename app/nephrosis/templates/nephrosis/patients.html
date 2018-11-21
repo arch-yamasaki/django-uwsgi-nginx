@@ -1,0 +1,16 @@
+{% extends "nephrosis/base.html" %}
+
+{% block body %}
+
+<h3> 患者一覧 </h3>
+<br>
+{% if patient_list %}
+    <div class="list-group">
+    {% for patient in patient_list %}
+        <a href="{% url 'nephrosis:detail' test_id patient.id %}" class="list-group-item">{{ patient.patient_text }}</a>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No nephrosis are available.</p>
+{% endif %} 
+{% endblock  %}

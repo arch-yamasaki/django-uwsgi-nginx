@@ -17,9 +17,9 @@
   </head>
   <body>
     <div class="jumbotron">
-        <h5> <a href="/">ネフローゼ発症予測支援システム</a> </h5>
+        <h5> <a href="{% url 'nephrosis:index' %}">ネフローゼ発症予測支援システム</a> </h5>
         {% if request.user.is_authenticated %}
-          <span>User : {{request.user.username}}  2 </span>
+          <span>UserName : {{request.user.username}}  </span>
           <div class="pull-right"> <a href="{% url 'logout' %}">Log out</a></div>
         {% endif %}
     </div>

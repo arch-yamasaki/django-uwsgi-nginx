@@ -2,13 +2,12 @@
 
 {% block body %}
 
-<h3> 患者一覧 です</h3>
+<h3> テストID</h3>
 <br>
-{% if patient_list %}
+{% if test_ids %}
     <div class="list-group">
-    {% for patient in patient_list %}
-        {% comment %} <a href="./{{ patient.id }}" class="list-group-item">{{ patient.patient_text }}</a> {% endcomment %}
-        <a href="{% url 'nephrosis:detail' patient.id %}" class="list-group-item">{{ patient.patient_text }}</a>
+    {% for test_id in test_ids %}
+        <a href="{% url 'nephrosis:patients' test_id %}" class="list-group-item"> TEST {{ test_id }}</a>
     {% endfor %}
     </div>
 {% else %}

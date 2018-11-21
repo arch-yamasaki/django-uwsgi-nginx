@@ -29,19 +29,31 @@ def testview(request):
 
 @login_required
 def index(request):
-    patient_list = Patient.objects.all()
-    # patient_list = get_list_or_404(Patient)
+    test_ids = ["A", "B", "C"]
     context = {
-        "patient_list": patient_list,
+        "test_ids": test_ids
     }
     return render(request, "nephrosis/index.html", context)
 
-@login_required
-def test_sel(request, test_id):
-    return(request, "nephrosis/test_sel.html")
+# @login_required
+def patients(request, test_id):
+    # user・test_id毎に違う患者データセットを表示
+    div = Patient.objects.count() // 3
+    order_value = request.user.id % 3
+    base_dict = {"A":0, "B":1, "C":2}
+    start = ((base_dict[test_id] + order_value) % 3) * div
+    end = start + div
+    patient_list = get_list_or_404(Patient)[start:end]
 
-@login_required
-def detail(request, patient_id):
+    context = {
+        "patient_list": patient_list,
+        "test_id" : test_id,
+    }
+    return render(request, "nephrosis/patients.html", context)
+
+
+# @login_required
+def detail(request, patient_id, test_id):
     if request.is_ajax():
         user_is_nephs = request.POST["is_nephs"] == "nephs"
         patient_obj = get_object_or_404(Patient, pk=patient_id)
@@ -52,7 +64,11 @@ def detail(request, patient_id):
             user=request.user,
             defaults=defaults,
         )
-        return HttpResponse(request.POST["is_nephs"])
+        if user_is_nephs:
+            return HttpResponse("現在の予測 : ネフローゼ")
+        else:
+            return HttpResponse("現在の予測 : 非ネフローゼ")
+        # return HttpResponse("現在の予測 : ".format(request.POST["is_nephs"]))
 
     else:
         patient_obj = get_object_or_404(Patient, pk=patient_id)
@@ -61,13 +77,17 @@ def detail(request, patient_id):
         date_list = Inspection.objects.filter(patient=patient_id).order_by("inspection_date").values_list("inspection_date", flat=True).distinct()
         item_list = ["ALB","BUN","CRE","CRP","Ca","Cl","IP","K","Na","T-CHO","PCR", "TP"]
         inspection_array = [Inspection.objects.filter(patient=patient_id, inspection_item=item).order_by("inspection_item").values_list("inspection_value", flat=True) for item in item_list]
+        # カラムの長さ調節のために、T-CHO -> TCHOに変更。
         item_list = ["ALB","BUN","CRE","CRP","Ca","Cl","IP","K","Na","TCHO","PCR", "TP"]
+        # 指定した引数のresult_objが存在しない場合はNoneにする。
+        result_obj = Result.objects.filter(patient=patient_obj, user=request.user).first()
         context = {
+            "test_id": test_id,
             "exp_list": exp_list,
             "patient_obj": patient_obj,
             "patient_id" : patient_id,
+            "result_obj" : result_obj,
             "inspection_array" : inspection_array,
-            "list_15" : range(15),
             "item_list" : item_list,
             "date_list": date_list,
             }
