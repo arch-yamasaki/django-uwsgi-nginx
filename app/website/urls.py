@@ -19,8 +19,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include('nephrosis.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include('accounts.urls')),
+    path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]
 

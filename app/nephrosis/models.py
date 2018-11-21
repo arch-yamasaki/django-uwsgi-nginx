@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.contrib.auth.models import AbstractUser
+
 
 class Patient(models.Model):
     patient_text = models.CharField(max_length=200)
@@ -25,11 +27,11 @@ class Exp(models.Model):
     #     return self.pk
 
 
-class User(models.Model):
-    user_name = models.CharField(max_length=100)
+class User(AbstractUser):
+    pass
 
     def __str__(self):
-        return self.user_name
+        return self.username
 
 
 class Result(models.Model):

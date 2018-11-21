@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     'nephrosis.apps.NephrosisConfig',
     'debug_toolbar',
     'django_extensions',
-    # for Accounts
-    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +141,7 @@ CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 APPEND_SLASH = True
 
 LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'nephrosis.User'
+
+LOGIN_URL = "/login"
